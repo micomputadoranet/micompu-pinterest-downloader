@@ -48,10 +48,10 @@ class PinterestService {
 	async downloadVideo(pinUrl) {
 		let page = null;
 		try {
-			console.log('Iniciando descarga para:', pinUrl);
+			console.log('Downloading:', pinUrl);
 
 			if (!this.isValidPinterestUrl(pinUrl)) {
-				throw new Error('URL de Pinterest no válida');
+				throw new Error('Invalid Pinterest URL');
 			}
 
 			const browser = await this.initBrowser();
@@ -65,7 +65,7 @@ class PinterestService {
 			page.setDefaultTimeout(45000);
 			page.setDefaultNavigationTimeout(45000);
 
-			console.log('Navegando a la URL...');
+			console.log('Browsing URL...');
 			await page.goto(pinUrl, {
 				waitUntil: 'networkidle2',
 				timeout: 45000,
@@ -78,7 +78,7 @@ class PinterestService {
 			const videoInfo = await this.extractVideoInfo(page, pinUrl);
 
 			if (videoInfo.videoUrl) {
-				console.log('Video URL encontrada:', videoInfo.videoUrl);
+				console.log('Found Video URL:', videoInfo.videoUrl);
 
 				// Descargar el video
 				const downloadResult = await this.downloadVideoFile(videoInfo.videoUrl, videoInfo.filename);
@@ -89,8 +89,8 @@ class PinterestService {
 					filename: downloadResult.filename,
 					filepath: downloadResult.filepath,
 					mediaUrl: videoInfo.videoUrl,
-					title: videoInfo.title || 'Video de Pinterest',
-					message: 'Video descargado exitosamente',
+					title: videoInfo.title || 'Pinterest Video',
+					message: 'Video download success',
 				};
 			}
 
@@ -111,7 +111,7 @@ class PinterestService {
 			});
 
 			if (imageInfo.imageUrl) {
-				console.log('Imagen URL encontrada:', imageInfo.imageUrl);
+				console.log('Image URL found:', imageInfo.imageUrl);
 
 				// Descargar imagen
 				const filename = `pinterest_image_${Date.now()}.jpg`;
@@ -134,8 +134,8 @@ class PinterestService {
 					filename,
 					filepath,
 					mediaUrl: imageInfo.imageUrl,
-					title: 'Imagen de Pinterest',
-					message: 'Imagen descargada exitosamente',
+					title: 'Pinterest Image',
+					message: 'Image download success',
 				};
 			}
 
@@ -143,14 +143,14 @@ class PinterestService {
 			return {
 				success: false,
 				error: 'NO_MEDIA',
-				message: 'No se encontró ni video ni imagen en el pin',
+				message: 'No video or image on this pin',
 			};
 		} catch (error) {
 			console.error('Error en PinterestService:', error);
 			return {
 				success: false,
 				error: error.message,
-				message: `Error al descargar el pin: ${error.message}`,
+				message: `Error downloading: ${error.message}`,
 			};
 		} finally {
 			if (page) {
@@ -327,7 +327,7 @@ class PinterestService {
 						downloadedLength += chunk.length;
 						if (contentLength) {
 							const percent = ((downloadedLength / contentLength) * 100).toFixed(2);
-							console.log(`Descargando: ${percent}%`);
+							console.log(`Downloading: ${percent}%`);
 						}
 					});
 
@@ -335,7 +335,7 @@ class PinterestService {
 
 					file.on('finish', () => {
 						file.close();
-						console.log('Descarga completada:', filename);
+						console.log('Download completed:', filename);
 						resolve({ filename, filepath });
 					});
 				})
@@ -345,7 +345,7 @@ class PinterestService {
 
 			request.setTimeout(60000, () => {
 				request.destroy();
-				reject(new Error('Timeout en la descarga'));
+				reject(new Error('Download Timeout'));
 			});
 		});
 	}
