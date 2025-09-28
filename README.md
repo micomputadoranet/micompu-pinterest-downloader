@@ -6,7 +6,7 @@ A simple Node.js module to download videos and images from Pinterest.
 ## 🚀 Installation
 
 ```bash
-git clone https://github.com/tuusuario/pinterest-downloader.git
+git clone https://github.com/micomputadoranet/micompu-pinterest-downloader.git
 cd micompu-pinterest-downloader
 npm install
 ````
