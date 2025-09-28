@@ -1,7 +1,7 @@
 {
   "name": "micompu-pinterest-downloader",
   "version": "1.0.0",
-  "description": "Descargador sencillo de videos e imágenes de Pinterest - Micompu",
+  "description": "Simple Video and Image Downloader Module for Nodejs - Micompu",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
